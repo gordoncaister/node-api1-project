@@ -12,6 +12,7 @@ server.get("/api/users", (req,res)=>{
     !users ? 
         res.status(500).json({errorMessage: "Database error"})  :
         res.status(200).json(users)
+
 })
 
 server.get("/api/users/:id", (req,res)=> {
@@ -22,9 +23,10 @@ server.get("/api/users/:id", (req,res)=> {
 })
 
 
-server.post('/api/users', function(req,res){
+server.post('/api/users', (req,res)=>{
   const person = req.body;
-  console.log("req" ,req)
+  console.log(req)
+  if(req.body == undefined){res.status(500).json({errorMessage:"Internal error"})}
   if( person.name && person.bio){
     users.push({ 
       id:shortid.generate(),
@@ -32,13 +34,31 @@ server.post('/api/users', function(req,res){
       bio:person.bio
      })
      .then(res.status(201).json(users))
-     .catch(res.status(500).json({errorMessage:"Database error"}));  
+     
   } else {
     res.status(400).json({errorMessage: "Please provide name and bio for the user." })
-  }
-  
+  } 
 })
 
 
+server.put("/api/users/:id",(req,res)=>{
+  console.log(req.body)
+  if(!req.body){
+    res.status(400).json({errorMessage: "Please make a change to the user"})
+  } else {
+    if(req.body.bio && req.body.name && req.body) {
+      const newUser = req.body
+      users[users.indexOf(users.find(e => e.id == req.params.id))] = newUser
+      res.status(201).json({newUser})
+    }
+  }
+  res.status(500).json({errorMessage: "server error"})
+})
+
+server.delete("/api/users/:id",(req,res) => {
+  if(users.indexOf(users.find)){
+    console.log("match")
+  }
+})
 
 server.listen(8000, () => console.log("\n== API is up ==\n"));
