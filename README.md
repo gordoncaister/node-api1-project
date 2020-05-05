@@ -47,12 +47,12 @@ Each User _resource_ should conform to the following structure (AKA schema):
 
 When the client makes a `POST` request to `/api/users`:
 
-- If the request body is missing the `name` or `bio` property:
+x- If the request body is missing the `name` or `bio` property:
 
   - respond with HTTP status code `400` (Bad Request).
   - return the following JSON response: `{ errorMessage: "Please provide name and bio for the user." }`.
 
-- If the information about the _user_ is valid:
+x- If the information about the _user_ is valid:
 
   - save the new _user_ the the database.
   - respond with HTTP status code `201` (Created).
