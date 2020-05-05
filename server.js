@@ -25,7 +25,7 @@ server.get("/api/users/:id", (req,res)=> {
 
 server.post('/api/users', (req,res)=>{
   const person = req.body;
-  console.log(req)
+  console.log(req.body)
   if(req.body == undefined){res.status(500).json({errorMessage:"Internal error"})}
   if( person.name && person.bio){
     users.push({ 
@@ -39,7 +39,6 @@ server.post('/api/users', (req,res)=>{
     res.status(400).json({errorMessage: "Please provide name and bio for the user." })
   } 
 })
-
 
 server.put("/api/users/:id",(req,res)=>{
   console.log(req.body)
