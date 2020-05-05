@@ -2,7 +2,7 @@ const express = require("express");
 const server = express();
 const shortid = require("shortid")
 
-const users = [{
+let users = [{
   id:shortid.generate(),
   name:'Jane Doe',
   bio:'Not Tarzans Wife, another Jane'
@@ -56,8 +56,16 @@ server.put("/api/users/:id",(req,res)=>{
 })
 
 server.delete("/api/users/:id",(req,res) => {
-  if(users.indexOf(users.find)){
+  const personIndex = users.indexOf(users.find(e => e.id == req.params.id))
+  if(personIndex){
+    console.log("notmatch")
+    res.status(404).json({errorMessage: "User does not exist"})
+  } else {
     console.log("match")
+    console.log(personIndex)
+    users.splice(personIndex, personIndex+1)
+    console.log(users)
+    res.status(200).json({message:"user was deleted"})
   }
 })
 
