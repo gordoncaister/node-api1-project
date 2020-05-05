@@ -33,7 +33,7 @@ server.post('/api/users', (req,res)=>{
       name:person.name,
       bio:person.bio
      })
-     .then(res.status(201).json(users))
+     res.status(201).json(users)
      
   } else {
     res.status(400).json({errorMessage: "Please provide name and bio for the user." })
