@@ -15,7 +15,10 @@ server.get("/api/users", (req,res)=>{
 })
 
 server.get("/api/users/:id", (req,res)=> {
-    
+    users.forEach(x => {
+      req.params.id == x.id && res.status(200).json({x})
+    })
+    res.status(404).json({errorMessage: "User not found"})
 })
 
 
