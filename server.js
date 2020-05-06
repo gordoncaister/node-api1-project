@@ -1,5 +1,7 @@
 const express = require("express");
 const server = express();
+server.use(express.json())
+
 const shortid = require("shortid")
 
 let users = [{
@@ -12,7 +14,6 @@ server.get("/api/users", (req,res)=>{
     !users ? 
         res.status(500).json({errorMessage: "Database error"})  :
         res.status(200).json(users)
-
 })
 
 server.get("/api/users/:id", (req,res)=> {
@@ -21,7 +22,6 @@ server.get("/api/users/:id", (req,res)=> {
     })
     res.status(404).json({errorMessage: "User not found"})
 })
-
 
 server.post('/api/users', (req,res)=>{
   const person = req.body;
@@ -33,8 +33,7 @@ server.post('/api/users', (req,res)=>{
       name:person.name,
       bio:person.bio
      })
-     res.status(201).json(users)
-     
+     res.status(201).json(users)  
   } else {
     res.status(400).json({errorMessage: "Please provide name and bio for the user." })
   } 
@@ -42,13 +41,13 @@ server.post('/api/users', (req,res)=>{
 
 server.put("/api/users/:id",(req,res)=>{
   console.log(req.body)
-  if(!req.body){
+  if(req.body == undefined){
     res.status(400).json({errorMessage: "Please make a change to the user"})
   } else {
     if(req.body.bio && req.body.name && req.body) {
-      const newUser = req.body
+      const newUser = {...req.body,id: req.params.id}
       users[users.indexOf(users.find(e => e.id == req.params.id))] = newUser
-      res.status(201).json({newUser})
+      res.status(201).json(newUser)
     }
   }
   res.status(500).json({errorMessage: "server error"})
